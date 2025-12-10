@@ -24,6 +24,33 @@
 - Added accessibility improvements (ARIA labels)
 - Better carousel styling and carousel captions
 
+### Phase 3 - New Features & Notifications ✅
+- **Reviews & Ratings System**
+  - ReviewModel with rating aggregation
+  - Review routes (CRUD operations)
+  - Frontend ReviewSection component
+  - Rating distribution display
+  - Helpful/unhelpful feedback system
+
+- **Order Tracking & Status**
+  - OrderStatus model with status history
+  - Enhanced order routes with tracking
+  - Frontend OrderTracking component
+  - Real-time status updates
+  - Delivery timeline visualization
+  - Order cancellation support
+
+- **Email Notifications**
+  - Email templates for order confirmations
+  - Status update notifications
+  - Welcome emails
+  - Password reset emails
+  - Review reminder emails
+  - Email service utility (Nodemailer)
+
+- **Dependencies Updated**
+  - Added Nodemailer for email sending
+
 ## File Structure
 
 ```
@@ -35,10 +62,17 @@ backend/
 ├── Routes/
 │   ├── CreateUser.js        (User signup/login)
 │   ├── DisplayData.js       (Food items and categories)
-│   └── OrderData.js         (Order management)
+│   ├── OrderData.js         (Legacy order routes)
+│   ├── Reviews.js           (Reviews CRUD operations)
+│   └── Orders.js            (Order tracking and status)
 ├── models/
 │   ├── User.js              (User schema)
-│   └── Orders.js            (Orders schema)
+│   ├── Orders.js            (Legacy orders schema)
+│   ├── OrderStatus.js       (Enhanced order with tracking)
+│   └── Review.js            (Reviews schema)
+├── utils/
+│   ├── emailService.js      (Email sending utility)
+│   └── emailTemplates.js    (Email HTML templates)
 ├── config.js                (Configuration file)
 ├── db.js                    (Database connection)
 └── index.js                 (Server entry point)
@@ -48,6 +82,8 @@ frontend/
 │   ├── components/
 │   │   ├── ErrorBoundary.js     (Error handling)
 │   │   ├── SearchFilter.js      (Search & filter UI)
+│   │   ├── ReviewSection.js     (Reviews display & form)
+│   │   ├── OrderTracking.js     (Order status tracking)
 │   │   ├── Navbar.js            (Navigation)
 │   │   ├── Card.js              (Food item card)
 │   │   ├── UIComponents.js      (Loading, Empty, Error states)
@@ -94,9 +130,21 @@ CORS_ORIGIN=http://localhost:3000
 - `POST /api/foodData` - Get all food items and categories
 - `GET /api/foodData?category=CategoryName` - Get food items by category
 
-### Orders
-- `POST /api/orderData` - Create or update order
-- `POST /api/myOrderData` - Get user's orders
+### Reviews
+- `POST /api/reviews` - Create a new review (requires auth)
+- `GET /api/reviews/:foodItemId` - Get reviews for a food item
+- `GET /api/user-reviews` - Get user's reviews (requires auth)
+- `PUT /api/reviews/:reviewId` - Update a review (requires auth)
+- `DELETE /api/reviews/:reviewId` - Delete a review (requires auth)
+- `POST /api/reviews/:reviewId/helpful` - Mark review as helpful/unhelpful
+
+### Orders (New Enhanced Routes)
+- `POST /api/orders` - Create new order with tracking (requires auth)
+- `GET /api/orders/:orderId` - Get order details by ID
+- `POST /api/my-orders` - Get user's order history
+- `PUT /api/orders/:orderId/status` - Update order status (admin)
+- `PUT /api/orders/:orderId/payment` - Update payment status
+- `PUT /api/orders/:orderId/cancel` - Cancel an order
 
 ### Health
 - `GET /api/health` - Check API status
