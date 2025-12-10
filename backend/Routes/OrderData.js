@@ -10,6 +10,13 @@ router.post('/orderData', validateOrderData, handleValidationErrors, asyncHandle
   try {
     const { email, order_data, order_date } = req.body;
 
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required"
+      });
+    }
+
     if (!order_data || order_data.length === 0) {
       return res.status(400).json({
         success: false,
@@ -31,22 +38,37 @@ router.post('/orderData', validateOrderData, handleValidationErrors, asyncHandle
         order_data: [orderDataWithDate]
       });
       
-      return res.status(201).json({
+      console.log('Order created:', {
+        email,
+        itemCount: order_data.length,
+        orderId: newOrder._id,
+        date: order_date
+      });
+
+      return res.status(200).json({
         success: true,
         message: "Order placed successfully",
         orderId: newOrder._id
       });
     } else {
       // Update existing order
-      await Order.findOneAndUpdate(
+      const updatedOrder = await Order.findOneAndUpdate(
         { email },
         { $push: { order_data: orderDataWithDate } },
         { new: true }
       );
 
-      return res.json({
+      console.log('Order updated:', {
+        email,
+        itemCount: order_data.length,
+        totalOrders: updatedOrder.order_data.length,
+        date: order_date
+      });
+
+      return res.status(200).json({
         success: true,
-        message: "Order added successfully"
+        message: "Order added successfully",
+        orderId: updatedOrder._id
       });
     }
 
@@ -54,7 +76,8 @@ router.post('/orderData', validateOrderData, handleValidationErrors, asyncHandle
     console.error('Order creation error:', error);
     res.status(500).json({
       success: false,
-      message: "Error processing order"
+      message: "Error processing order",
+      error: error.message
     });
   }
 }))
