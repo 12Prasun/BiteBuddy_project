@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {useCart, useDispatchCart} from '../components/ContextReducer';
 import './Cart.css';
 
@@ -6,6 +7,7 @@ import './Cart.css';
 export default function Cart() {
   let data = useCart();
   let dispatch = useDispatchCart();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   if (data.length === 0) {
@@ -26,6 +28,7 @@ export default function Cart() {
     setMessage("");
     
     let userEmail = localStorage.getItem("userEmail");
+    let userName = localStorage.getItem("userName");
     let authToken = localStorage.getItem("authToken");
     
     // Validate user is logged in
@@ -41,47 +44,28 @@ export default function Cart() {
       return;
     }
 
-    console.log("Checkout Data:", {
+    const totalPrice = data.reduce((total, food) => total + food.price, 0);
+    
+    console.log("Proceeding to payment with:", {
       items: data.length,
       email: userEmail,
-      total: data.reduce((total, food) => total + food.price, 0),
+      total: totalPrice,
       date: new Date().toDateString()
     });
 
-    let response = await fetch("http://localhost:5000/api/orderData", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': authToken ? `Bearer ${authToken}` : ''
-      },
-      body: JSON.stringify({
-        order_data: data,
-        email: userEmail,
-        order_date: new Date().toDateString()
-      })
-    });
-
-    console.log("Response Status:", response.status);
-    const responseData = await response.json();
-    console.log("Response Data:", responseData);
-
-    if (response.status === 200 || response.status === 201) {
-      if (responseData.success) {
-        setMessage("✅ Order placed successfully!");
-        setTimeout(() => {
-          dispatch({ type: "DROP" });
-          setMessage("");
-        }, 1500);
-      } else {
-        setMessage(`❌ ${responseData.message || "Failed to place order"}`);
+    // Navigate to payment/checkout page with cart data
+    navigate('/payment', {
+      state: {
+        cartItems: data,
+        userEmail: userEmail,
+        userName: userName,
+        totalAmount: totalPrice,
+        orderDate: new Date().toDateString()
       }
-    } else {
-      setMessage(`❌ Error: ${responseData.message || "Checkout failed"}`);
-    }
+    });
   } catch (error) {
     console.error("Checkout error:", error);
     setMessage(`❌ Error: ${error.message}`);
-  } finally {
     setLoading(false);
   }
 }

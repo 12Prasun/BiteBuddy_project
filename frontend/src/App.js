@@ -14,6 +14,7 @@ import Signup from './screens/Signup';
 import { CartProvider } from './components/ContextReducer';
 import Cart from './screens/Cart';
 import MyOrder from './screens/MyOrder';
+import Payment from './screens/Payment';
 import ErrorBoundary from './components/ErrorBoundary';
 
 function App() {
@@ -27,6 +28,9 @@ function App() {
               <Route exact path="/login" element={<Login/>}/>
               <Route exact path="/createuser" element={<Signup/>}/>
               <Route exact path="/myOrder" element={<MyOrder/>}/>
+              <Route exact path="/myOrderData" element={<MyOrder/>}/>
+              <Route exact path="/payment" element={<Payment/>}/>
+              <Route exact path="/cart" element={<Cart/>}/>
             </Routes>
           </div>
         </Router>
