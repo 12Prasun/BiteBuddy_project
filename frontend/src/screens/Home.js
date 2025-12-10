@@ -17,7 +17,7 @@ export default function Home() {
         setLoading(true);
         setError(null);
         try {
-            let response = await fetch("https://bitebuddyy-project.onrender.com/api/foodData", {
+            let response = await fetch("http://localhost:5000/api/foodData", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
