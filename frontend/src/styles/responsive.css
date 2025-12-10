@@ -1,0 +1,271 @@
+/* BiteBuddy Frontend Responsive Design Improvements */
+
+:root {
+  --primary-color: #28a745;
+  --secondary-color: #6c757d;
+  --danger-color: #dc3545;
+  --success-color: #28a745;
+  --warning-color: #ffc107;
+}
+
+/* Navbar Improvements */
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* Search Filter Component */
+.search-filter {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+}
+
+.search-filter .form-control,
+.search-filter .form-select {
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.search-filter .form-control:focus,
+.search-filter .form-select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+/* Card Improvements */
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-img-top {
+  border-radius: 12px 12px 0 0;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.card-title {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+/* Button Improvements */
+.btn {
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-success {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-success:hover {
+  background-color: #218838;
+  border-color: #218838;
+}
+
+.btn-light {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Loading Spinner */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Alert Improvements */
+.alert {
+  border: none;
+  border-left: 4px solid;
+  border-radius: 8px;
+  animation: slideIn 0.3s ease;
+}
+
+.alert-danger {
+  border-left-color: var(--danger-color);
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.alert-success {
+  border-left-color: var(--success-color);
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.alert-warning {
+  border-left-color: var(--warning-color);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Pagination Improvements */
+.pagination {
+  gap: 0.5rem;
+}
+
+.page-link {
+  border-radius: 6px;
+  color: var(--primary-color);
+  border: 1px solid #ddd;
+  padding: 0.5rem 0.75rem;
+}
+
+.page-link:hover {
+  color: white;
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.page-item.active .page-link {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+/* Responsive Grid */
+@media (max-width: 768px) {
+  .search-filter {
+    padding: 1rem;
+  }
+
+  .search-filter .row {
+    gap: 1rem;
+  }
+
+  .card {
+    margin-bottom: 1rem;
+  }
+
+  .navbar-brand {
+    font-size: 1.5rem !important;
+  }
+
+  .btn {
+    font-size: 0.875rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .search-filter {
+    padding: 0.75rem;
+  }
+
+  .card {
+    min-height: auto;
+  }
+
+  .container {
+    padding: 1rem;
+  }
+
+  .fs-3 {
+    font-size: 1.5rem !important;
+  }
+
+  .d-flex {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .d-flex.flex-wrap {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+/* Carousel Improvements */
+.carousel {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.carousel-caption {
+  bottom: 50%;
+  transform: translateY(50%);
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  width: 10%;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  margin: 0 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.carousel:hover .carousel-control-prev,
+.carousel:hover .carousel-control-next {
+  opacity: 1;
+}
+
+/* Footer Improvements */
+footer {
+  background-color: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+  margin-top: 3rem;
+  padding: 2rem 0;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.empty-state svg {
+  color: #ccc;
+  margin-bottom: 1rem;
+}
+
+/* Accessibility */
+.btn:focus,
+.form-control:focus,
+.form-select:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+  .navbar,
+  footer,
+  .btn-close {
+    display: none;
+  }
+}
