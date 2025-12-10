@@ -4,10 +4,30 @@ import { Link } from 'react-router-dom'
 export default function Signup() {
 
     const [credentials, setcredentials] = useState({ name: "", email: "", password: "", geolocation: "" })
+    const [passwordError, setPasswordError] = useState("");
+
+    const validatePassword = (password) => {
+        const hasUppercase = /[A-Z]/.test(password);
+        const hasLowercase = /[a-z]/.test(password);
+        const hasNumber = /\d/.test(password);
+        const hasMinLength = password.length >= 6;
+
+        if (!hasMinLength) return "Password must be at least 6 characters";
+        if (!hasUppercase) return "Password must contain an uppercase letter (A-Z)";
+        if (!hasLowercase) return "Password must contain a lowercase letter (a-z)";
+        if (!hasNumber) return "Password must contain a number (0-9)";
+        return "";
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(JSON.stringify({ name: credentials.name, email: credentials.email, password: credentials.password, location: credentials.geolocation }))
+        
+        const pwdError = validatePassword(credentials.password);
+        if (pwdError) {
+            alert(pwdError);
+            return;
+        }
+
         const response = await fetch("http://localhost:5000/api/createuser", {
             method: 'POST',
             headers: {
@@ -19,11 +39,20 @@ export default function Signup() {
         console.log(json);
 
         if (!json.success) {
-            alert("Enter valid credentials")
+            if (json.errors) {
+                alert("Validation errors:\n" + json.errors.map(e => e.message).join("\n"));
+            } else {
+                alert(json.message || "Error creating account");
+            }
+        } else {
+            alert("Signup successful! Please login.");
         }
     }
     const onChange = (event) => {
         setcredentials({ ...credentials, [event.target.name]: event.target.value })
+        if (event.target.name === 'password') {
+            setPasswordError(validatePassword(event.target.value));
+        }
     }
     return (
         <>
@@ -41,6 +70,11 @@ export default function Signup() {
                     <div className="mb-3">
                         <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
                         <input type="password" className="form-control" name='password' value={credentials.password} onChange={onChange} id="exampleInputPassword1" />
+                        {passwordError && <small className="text-danger d-block mt-2">⚠️ {passwordError}</small>}
+                        {!passwordError && credentials.password && <small className="text-success d-block mt-2">✓ Password is valid</small>}
+                        <small className="form-text text-muted d-block mt-2">
+                            Password must: be 6+ characters, have uppercase (A-Z), lowercase (a-z), and number (0-9)
+                        </small>
                     </div>
                     <div className="mb-3">
                         <label htmlFor="exampleInputPassword1" className="form-label">Address</label>
